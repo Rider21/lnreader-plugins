@@ -13,7 +13,7 @@
     "icons": "npm run clearMultisrc && npm run generate && npx tsc -m node16 && npm run json && node ./scripts/icon_reloading.js",
     "json": " node ./scripts/json_plugins.js",
     "lint": "npx eslint .",
-    "prepare": "husky install",
+    "prepare": "husky",
     "prettier": "prettier --write \"./**/*.{js,ts}\"",
     "proxy": "node proxy_server.js",
     "start": "node importPlugins.js && concurrently \"npm run dev\" \"npm run proxy\"",
@@ -54,7 +54,7 @@
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.6.0",
     "http-proxy": "^1.18.1",
-    "husky": "^9.0.11",
+    "husky": "^9.1.1",
     "image-size": "^1.1.1",
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
@@ -63,8 +63,5 @@
     "typescript": "^5.5.2",
     "typescript-eslint": "^7.14.1",
     "vite": "^5.2.0"
-  },
-  "lint-staged": {
-    "**/*.{js,ts,jsx,tsx}": "prettier --write"
   }
 }
