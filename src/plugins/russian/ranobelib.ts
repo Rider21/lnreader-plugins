@@ -20,6 +20,11 @@ class RLIB implements Plugin.PluginBase {
   apiSite = 'https://api.lib.social/api/manga/';
   version = '2.0.2';
   icon = 'src/ru/ranobelib/icon.png';
+  imageRequestInit: Plugin.ImageRequestInit = {
+    headers: {
+      Referer: this.site,
+    },
+  };
   webStorageUtilized = true;
 
   async popularNovels(
