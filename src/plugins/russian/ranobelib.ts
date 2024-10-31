@@ -29,14 +29,14 @@ class RLIB implements Plugin.PluginBase {
         'Mozilla/5.0 (Linux; Android 11; SM-A307FN Build/RP1A.200720.012; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/127.0.6533.103 Mobile Safari/537.36',
       'sec-ch-ua-platform': 'Android',
       'accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/,/;q=0.8',
+      'x-requested-with': 'com.rajarsheechatterjee.LNReader.commit_c498d7e9',
       'sec-fetch-site': 'same-origin',
       'sec-fetch-mode': 'no-cors',
       'sec-fetch-dest': 'image',
-      'referer': this.site + '/',
+      'referer': 'https://ranobelib.me/',
       'accept-encoding': 'gzip, deflate, br, zstd',
       'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
       'priority': 'u=1, i',
-      'cookie': '',
     },
   };
   webStorageUtilized = true;
