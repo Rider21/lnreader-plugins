@@ -373,11 +373,18 @@ function parseDate(dateString: string = ''): string | null {
     декабря: 12,
   };
 
+  // Checking the format "X ч. назад"
+  const relativeTimeRegex = /(d+)s*ч.?s*назад/;
+  const match = dateString.match(relativeTimeRegex);
+  if (match) {
+    const hoursAgo = parseInt(match[1], 10);
+    return dayjs().subtract(hoursAgo, 'hour').format('LL');
+  }
+
   if (dateString.includes('.')) {
     const [day, month, year] = dateString.split('.');
-    if (day && month && year) {
-      return dayjs(year + '-' + month + '-' + day).format('LL');
-    }
+    const fullYear = year?.length === 2 ? '20' + year : year;
+    return dayjs(fullYear + '-' + month + '-' + day).format('LL');
   } else if (dateString.includes(' ')) {
     const [day, month] = dateString.split(' ');
     if (day && months[month]) {
@@ -385,5 +392,6 @@ function parseDate(dateString: string = ''): string | null {
       return dayjs(year + '-' + months[month] + '-' + day).format('LL');
     }
   }
+
   return dateString || null;
 }
