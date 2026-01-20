@@ -95,7 +95,6 @@ class IfreedomPlugin implements Plugin.PluginBase {
 
   async parseNovel(novelPath: string): Promise<Plugin.SourceNovel> {
     const html = await fetchApi(this.site + novelPath).then(res => res.text());
-
     const novel: Plugin.SourceNovel = {
       path: novelPath,
       name: '',
@@ -140,6 +139,30 @@ class IfreedomPlugin implements Plugin.PluginBase {
             isReadingSummary = true;
           }
         }
+
+        if (
+          isReadingSummary &&
+          name === 'span' &&
+          className.includes('open-desc')
+        ) {
+          const onclick = attribs['onclick'];
+          if (onclick) {
+            const match = onclick.match(/innerHTML\s*=\s*'([\s\S]+?)'/);
+            if (match && match[1]) {
+              let fullText = match[1];
+              fullText = fullText
+                .replace(/&lt;br&gt;/gi, '\n')
+                .replace(/<br\s*\/?>/gi, '\n')
+                .replace(/&quot;/g, '"')
+                .replace(/&#039;/g, "'")
+                .replace(/&amp;/g, '&');
+
+              novel.summary = fullText;
+              isReadingSummary = false;
+            }
+          }
+        }
+
         if (name === 'img' && isCoverContainer && !novel.cover) {
           novel.cover = attribs['src'];
         }
@@ -209,11 +232,12 @@ class IfreedomPlugin implements Plugin.PluginBase {
         if (!text) return;
 
         if (isReadingName) novel.name = text.replace(/®/g, '').trim();
-        if (isReadingSummary) novel.summary += text + '\n';
+        if (isReadingSummary && text !== 'Прочесть полностью') {
+          novel.summary += text + '\n';
+        }
 
         if (metaContext) {
           const shouldRead = isMetaValue || (isMetaRow && !isMetaValue);
-
           if (shouldRead) {
             if (metaContext === 'author') {
               if (
@@ -244,7 +268,6 @@ class IfreedomPlugin implements Plugin.PluginBase {
         }
 
         if (name === 'a') isReadingChapterName = false;
-
         if ((name === 'div' || name === 'span') && isReadingChapterDate) {
           isReadingChapterDate = false;
           if (tempChapter.path) {
@@ -312,18 +335,26 @@ class IfreedomPlugin implements Plugin.PluginBase {
   }
 }
 
-function parseStatus(statusString: string): NovelStatus {
+function parseStatus(statusString: string): string {
   const s = statusString.toLowerCase().trim();
-  switch (s) {
-    case 'Перевод активен':
-      return NovelStatus.Ongoing;
-    case 'Произведение завершено':
-      return NovelStatus.Completed;
-    case 'приостановлен':
-      return NovelStatus.OnHiatus;
-    default:
-      return NovelStatus.Unknown;
+
+  if (
+    s.includes('активен') ||
+    s.includes('продолжается') ||
+    s.includes('онгоинг')
+  ) {
+    return NovelStatus.Ongoing;
   }
+
+  if (s.includes('завершен') || s.includes('конец') || s.includes('закончен')) {
+    return NovelStatus.Completed;
+  }
+
+  if (s.includes('приостановлен') || s.includes('заморожен')) {
+    return NovelStatus.OnHiatus;
+  }
+
+  return NovelStatus.Unknown;
 }
 
 function parseDate(dateString: string = ''): string | null {
