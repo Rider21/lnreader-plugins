@@ -1,7 +1,7 @@
 {
   "filters": {
     "genres": {
-      "type": "Picker",
+      "type": "Checkbox",
       "label": "Жанры: все жанры любой жанр",
       "value": "",
       "options": [

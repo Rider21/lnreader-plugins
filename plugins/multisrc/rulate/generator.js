@@ -12,10 +12,12 @@ export const generateAll = function () {
     source.key = key;
     source.filters = defaultSettings.filters;
 
-    const exist = existsSync(join(folder, 'filters', source.id + '.json'));
+    const exist = existsSync(
+      join(folder, 'filters', source.sourceName + '.json'),
+    );
     if (exist) {
       const filters = readFileSync(
-        join(folder, 'filters', source.id + '.json'),
+        join(folder, 'filters', source.sourceName + '.json'),
       );
       source.filters = Object.assign(
         defaultSettings.filters,

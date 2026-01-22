@@ -27,7 +27,7 @@ class RulatePlugin implements Plugin.PluginBase {
   };
 
   constructor(metadata: RulateMetadata) {
-    this.id = metadata.id + '-API';
+    this.id = metadata.id;
     this.name = metadata.sourceName + ' (API)';
     this.icon = `multisrc/rulate/${metadata.id.toLowerCase()}/icon.png`;
     this.site = metadata.sourceSite;
@@ -125,7 +125,7 @@ class RulatePlugin implements Plugin.PluginBase {
           chapters.push({
             name: chapter.title + (chapter.illustrated ? ' 🖼️' : ''),
             path: novelPath + '/' + chapter.id,
-            releaseTime: dayjs(chapter.cdate).format('LLL'),
+            releaseTime: dayjs(chapter.cdate * 1000).format('LLL'),
           });
         }
       });
@@ -182,7 +182,7 @@ interface ChaptersResponse {
   response: {
     title: string;
     id: number;
-    cdate: string;
+    cdate: number;
     can_read: boolean;
     illustrated?: boolean;
   }[];

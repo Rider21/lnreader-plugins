@@ -10,7 +10,7 @@ const key = 'fpoiKLUues81werht039';
 async function getFilters(name, url) {
   const filters = {
     genres: {
-      type: 'Picker',
+      type: 'Checkbox',
       label: 'Жанры: все жанры любой жанр',
       value: '',
       options: [],
@@ -56,7 +56,7 @@ try {
 
   for (const source of sources) {
     if (source.id && source.sourceSite) {
-      await getFilters(source.id, source.sourceSite);
+      await getFilters(source.sourceName, source.sourceSite);
     }
   }
 } catch (e) {
