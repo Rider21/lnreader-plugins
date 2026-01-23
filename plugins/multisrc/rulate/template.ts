@@ -126,6 +126,7 @@ class RulatePlugin implements Plugin.PluginBase {
             name: chapter.title + (chapter.illustrated ? ' 🖼️' : ''),
             path: novelPath + '/' + chapter.id,
             releaseTime: dayjs(chapter.cdate * 1000).format('LLL'),
+            chapterNumber: chapter.ord,
           });
         }
       });
@@ -182,6 +183,7 @@ interface ChaptersResponse {
   response: {
     title: string;
     id: number;
+    ord: number;
     cdate: number;
     subscription: number;
     can_read: boolean;
