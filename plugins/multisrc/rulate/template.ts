@@ -13,6 +13,11 @@ export type RulateMetadata = {
   key: string;
 };
 
+const headers = {
+  'User-Agent': 'RuLateApp Android',
+  'accept-encoding': 'gzip',
+};
+
 class RulatePlugin implements Plugin.PluginBase {
   id: string;
   name: string;
@@ -21,10 +26,6 @@ class RulatePlugin implements Plugin.PluginBase {
   version: string;
   filters?: Filters | undefined;
   key: string;
-  headers = {
-    'User-Agent': 'RuLateApp Android',
-    'accept-encoding': 'gzip',
-  };
 
   constructor(metadata: RulateMetadata) {
     this.id = metadata.id;
@@ -37,7 +38,7 @@ class RulatePlugin implements Plugin.PluginBase {
   }
 
   parseNovels(url: string) {
-    return fetchApi(url)
+    return fetchApi(url, { headers })
       .then(res => res.json() as Promise<SearchResponse>)
       .then((data: SearchResponse) => {
         const novels: Plugin.NovelItem[] = [];
@@ -86,6 +87,7 @@ class RulatePlugin implements Plugin.PluginBase {
   async parseNovel(novelPath: string): Promise<Plugin.SourceNovel> {
     const book = await fetchApi(
       this.site + '/api3/book?book_id=' + novelPath + '&key=' + this.key,
+      { headers },
     ).then(res => res.json() as Promise<BookResponse>);
 
     const novel: Plugin.SourceNovel = {
@@ -115,6 +117,7 @@ class RulatePlugin implements Plugin.PluginBase {
         novelPath +
         '&key=' +
         this.key,
+      { headers },
     ).then(res => res.json() as Promise<ChaptersResponse>);
 
     const chapters: Plugin.ChapterItem[] = [];
@@ -146,6 +149,7 @@ class RulatePlugin implements Plugin.PluginBase {
         chapter +
         '&key=' +
         this.key,
+      { headers },
     ).then(res => res.json() as Promise<ChapterTextResponse>);
 
     return body.response.text;
