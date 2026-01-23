@@ -25,7 +25,7 @@ export const generateAll = function () {
       );
     }
 
-    console.log(`[rulateApi]: Generating`, source.id);
+    console.log(`[rulate]: Generating`, source.id);
     return generator(source);
   });
 };

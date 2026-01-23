@@ -121,7 +121,7 @@ class RulatePlugin implements Plugin.PluginBase {
 
     if (chaptersData.response && Array.isArray(chaptersData.response)) {
       chaptersData.response.forEach(chapter => {
-        if (chapter.can_read) {
+        if (chapter.can_read && chapter.subscription === 0) {
           chapters.push({
             name: chapter.title + (chapter.illustrated ? ' 🖼️' : ''),
             path: novelPath + '/' + chapter.id,
@@ -183,6 +183,7 @@ interface ChaptersResponse {
     title: string;
     id: number;
     cdate: number;
+    subscription: number;
     can_read: boolean;
     illustrated?: boolean;
   }[];

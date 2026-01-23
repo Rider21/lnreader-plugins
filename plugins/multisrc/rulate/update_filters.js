@@ -18,8 +18,9 @@ async function getFilters(name, url) {
   };
 
   try {
-    const response = await fetch(`${url}/api3/genres?key=${key}`);
-    const genres = await response.json();
+    const genres = await fetch(`${url}/api3/genres?key=${key}`).then(res =>
+      res.json(),
+    );
 
     if (genres.status === 'success' && genres.response?.length) {
       genres.response.forEach(genre => {
