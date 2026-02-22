@@ -149,7 +149,7 @@ class Jaomix implements Plugin.PagePlugin {
     );
     const loadedCheerio = parseHTML(body);
 
-    loadedCheerio('.lazyblock').remove();
+    loadedCheerio('.adblock-service, .lazyblock').remove();
     const chapterText = loadedCheerio('.entry-content').html() || '';
 
     return chapterText.replace(/<a[^>]*>(.*?)<\/a>/gi, '$1');
