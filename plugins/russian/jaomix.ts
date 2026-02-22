@@ -127,7 +127,7 @@ class Jaomix implements Plugin.PagePlugin {
   parseChapters(loadedCheerio: CheerioAPI) {
     const chapters: Plugin.ChapterItem[] = [];
 
-    loadedCheerio('div.title').each((chapterIndex, element) => {
+    loadedCheerio('div.title').each((_, element) => {
       const name = loadedCheerio(element).find('a').attr('title');
       const url = loadedCheerio(element).find('a').attr('href');
       if (!name || !url) return;
@@ -149,9 +149,8 @@ class Jaomix implements Plugin.PagePlugin {
     );
     const loadedCheerio = parseHTML(body);
 
-    loadedCheerio('div[class="adblock-service"]').remove();
-    const chapterText =
-      loadedCheerio('div[class="entry-content"]').html() || '';
+    loadedCheerio('.lazyblock').remove();
+    const chapterText = loadedCheerio('.entry-content').html() || '';
 
     return chapterText.replace(/<a[^>]*>(.*?)<\/a>/gi, '$1');
   }
